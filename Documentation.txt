@@ -1,0 +1,19 @@
+The registration feature is very similar to the login feature. 
+During the input phase, the registration syntax is /register <username> <password> <server ip> <port number>. 
+Here the server ip and port number are used to create a connection with the server, and the username and password info is sent as part of the source and data of the message struct. 
+On the server side, a check is first conducted to see if the user already exists in the database of users (a .txt file). 
+If the user does not exist, the username and password is added to the database consisting of other registered users. 
+The newly registered user is also logged in the same way the /login command would log a preexisting user, and can perform all other implemented functionalities.  
+If the user that is trying to be registed is already present in the database, then the server sends the client a Nack. 
+If a Nack is received by the client, the user is again prompted to login or register with the error message "Username in use".
+Otherwise, the program continues to the state of creating or joining a session.
+
+
+The private messaging feature can be utilized by the client at any point of time once they have either registered or logged in. 
+The syntax to use this feature is /priv <username>+<message>. 
+Here, the username and message is sent to the server as part of the message data. 
+On the server side, the message is sent to the username mentioned with the data in the format <username>: <message>, in which case the username is the username of the original sender. 
+The server does this by iterating through each of the logged in clients (stored in an array of user structs containing relevant information about each client), and then checking to see if the username matches the one requested for in the private message. 
+If the username exists, then the stored information in the user struct is used with the send function to send a private message. 
+If the username is not found to exist or be logged in, then a Nack is sent.
+Receiving a Nack or an Ack in the client side does not change the state of the program and continues looping through prompting the user for an input and accept a message from the server.
